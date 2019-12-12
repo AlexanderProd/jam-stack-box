@@ -1,3 +1,5 @@
+import { ChildProcess } from 'child_process';
+
 export interface SiteDBTable {
   id: string;
   name: string;
@@ -13,4 +15,15 @@ export interface Constants {
   FRONTEND_DIR: string;
   SITES_BUILD_FOLDER: string;
   BUILDER_PATH: string;
+}
+
+export interface BuildProcess {
+  [key: string]: ChildProcess;
+}
+
+export interface BuildProcessesType {
+  processes: BuildProcess;
+  get: Function;
+  set: Function;
+  del: Function;
 }
