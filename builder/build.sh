@@ -5,6 +5,8 @@
 readonly REPO_URL=$1
 readonly BUILD_COMMAND=$2
 
+trap "exit" SIGHUP SIGINT SIGTERM
+
 variable_is_set() {
   declare -p "$1" &>/dev/null
 }

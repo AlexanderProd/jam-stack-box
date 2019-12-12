@@ -11,7 +11,14 @@ const main = async () => {
   const BUILD_COMMAND = argv[4];
   const OUTPUT_DIR = argv[5];
 
-  const siteDirectory = join(__dirname, SITE_ID);
+  const siteDirectory = join(
+    __dirname,
+    SITE_ID +
+      "_" +
+      Math.random()
+        .toString(36)
+        .substring(2, 8)
+  );
 
   mkdirSync(siteDirectory);
 
@@ -21,12 +28,21 @@ const main = async () => {
     shell: true
   });
 
-  build.stdout.on("data", data => console.log(data));
+  // Use this for streaming build output to frontend.
+  // build.stdout.on("data", data => console.log(data));
   build.on("error", err => console.error(err));
   build.on("close", code => {
     if (code === 0) {
-      process.send("Sucess!");
+      process.send("sucess");
       removeDir(siteDirectory);
+    }
+  });
+
+  process.on("message", msg => {
+    if (msg === "stop") {
+      build.kill();
+      removeDir(siteDirectory);
+      process.exit();
     }
   });
 };
