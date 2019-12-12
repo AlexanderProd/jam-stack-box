@@ -5,6 +5,7 @@ import Database from 'better-sqlite3';
 import createSite from './routes/createSite';
 import getSite from './routes/getSite';
 import build from './routes/build';
+import builds from './routes/builds';
 import constants from './config';
 
 const { DB_FOLDER, PORT, FRONTEND_DIR } = constants;
@@ -33,6 +34,7 @@ const main = () => {
   app.post('/site', createSite(db));
   app.get('/site/:id', getSite(db));
   app.post('/build/:id', build(db));
+  app.get('/builds', builds);
 
   app.listen(PORT, () => console.log('App listening on port 3000!'));
 };
