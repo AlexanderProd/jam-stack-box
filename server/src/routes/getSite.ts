@@ -13,10 +13,10 @@ const getSite = (db: Database) => (req: Request, res: Response): void => {
   const site = stmt.get(id);
 
   if (site === undefined) {
-    res.status(404).send('Site not found.');
+    res.status(404).json({ error: 'Site not found.' });
   }
 
-  res.send(site);
+  res.status(200).json(site);
 };
 
 export default getSite;
