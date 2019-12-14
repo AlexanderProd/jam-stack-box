@@ -40,7 +40,6 @@ const main = async () => {
 
   build.on("close", code => {
     if (code === 0) {
-      process.send("sucess");
       finish();
     }
   });
