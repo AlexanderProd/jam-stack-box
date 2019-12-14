@@ -1,0 +1,8 @@
+.git
+.cache
+server/db
+node_modules
+dist
+resources
+LICENSE
+README.md
