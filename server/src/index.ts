@@ -1,6 +1,6 @@
-import express from 'express';
+import express, { response } from 'express';
 import bodyParser from 'body-parser';
-import Database from 'better-sqlite3';
+import { mkdirSync, existsSync } from 'fs';
 
 import createSite from './routes/createSite';
 import getSite from './routes/getSite';
@@ -11,30 +11,21 @@ import BuildProcesses from './BuildProcesses';
 
 const { DB_FOLDER, PORT, FRONTEND_DIR } = constants;
 const app = express();
-const db = new Database(DB_FOLDER);
 
-const initDB = () => {
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS sites (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      source TEXT,
-      domain TEXT,
-      output_dir TEXT,
-      build_command TEXT
-    );
-  `);
+const init = () => {
+  if (existsSync(DB_FOLDER)) return;
+  mkdirSync(DB_FOLDER);
 };
 
 const main = () => {
-  initDB();
+  init();
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use('/', express.static(__dirname + FRONTEND_DIR));
 
-  app.post('/site', createSite(db));
-  app.get('/site/:id', getSite(db));
-  app.post('/build/:id', build(db));
+  app.post('/site', createSite);
+  app.get('/site/:id', getSite);
+  app.post('/build/:id', build);
   app.get('/builds', builds);
 
   app.listen(PORT, () => console.log('App listening on port 3000!'));

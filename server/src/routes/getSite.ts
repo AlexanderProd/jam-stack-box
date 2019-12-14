@@ -1,19 +1,24 @@
 import { Request, Response } from 'express';
-import { Database } from 'better-sqlite3';
 
-const getSite = (db: Database) => (req: Request, res: Response): void => {
+import { getFromDB } from '../util';
+import { SiteObject } from '../@types';
+
+const getSite = async (req: Request, res: Response) => {
   const { id } = req.params;
+  let site: SiteObject;
 
-  const stmt = db.prepare(`
-    SELECT *
-    FROM sites 
-    WHERE id = ?
-  `);
+  if (!id) {
+    return res.status(404).json({ error: 'No siteID provided!' });
+  }
 
-  const site = stmt.get(id);
+  try {
+    site = await getFromDB(id);
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
 
-  if (site === undefined) {
-    res.status(404).json({ error: 'Site not found.' });
+  if (!site) {
+    return res.status(404).json({ error: 'Site not found!' });
   }
 
   res.status(200).json(site);

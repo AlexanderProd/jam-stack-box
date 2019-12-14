@@ -1,4 +1,4 @@
-import { BuildProcess } from '../types';
+import { BuildProcess } from '../@types';
 
 const BuildProcesses = (() => {
   let processes: BuildProcess = {};

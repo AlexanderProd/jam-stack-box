@@ -1,48 +1,27 @@
 import { Request, Response } from 'express';
-import { Database } from 'better-sqlite3';
 
-import { createSiteID } from '../util';
-import { SiteDBTable } from '../types';
+import { createSiteID, saveToDB } from '../util';
+import { SiteObject } from '../@types';
 
-const sites = (db: Database) => (req: Request, res: Response) => {
-  const { name, source, domain, output_dir, build_command } = req.body;
+const createSite = async (req: Request, res: Response) => {
+  const { name, source, domain, buildCommand } = req.body;
+  const id = createSiteID();
 
-  const insert = db.prepare(`
-    INSERT INTO sites (
-      id, 
-      name,
-      source,
-      domain,
-      output_dir,
-      build_command
-    ) VALUES (
-      @id, 
-      @name,
-      @source,
-      @domain,
-      @output_dir,
-      @build_command
-    );
-  `);
+  const data: SiteObject = {
+    id,
+    name,
+    source,
+    domain,
+    buildCommand,
+  };
 
-  const insertSite = db.transaction((site: SiteDBTable) => insert.run(site));
-  const siteID = createSiteID();
-
-  // ToDo Error handling
   try {
-    insertSite({
-      id: siteID,
-      name,
-      source,
-      domain,
-      output_dir,
-      build_command,
-    });
+    await saveToDB(id, data);
   } catch (error) {
-    res.status(500).json({ error });
+    return res.status(500).json({ error });
   }
 
-  res.status(200).json({ siteCreated: siteID });
+  res.status(200).json({ siteCreated: id });
 };
 
-export default sites;
+export default createSite;
