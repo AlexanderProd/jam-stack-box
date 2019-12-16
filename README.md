@@ -33,5 +33,5 @@ docker run -v /Users/your-user-name/.jamstackbox:/data -d -p 4757:3000 --restart
 
 ## 📌 ToDo
 
-- [] Reduce Docker image size.
-- [] Split server and builder into dedicated docker containers.
+- [ ] Reduce Docker image size.
+- [ ] Split server and builder into dedicated docker containers.
