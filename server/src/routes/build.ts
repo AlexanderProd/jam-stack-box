@@ -32,8 +32,9 @@ const build = async (req: Request, res: Response) => {
     process.disconnect();
   }
 
-  const builder = fork(__dirname + constants.BUILDER_PATH, [id, site.source], {
+  const builder = fork(constants.BUILDER_PATH, [id, site.source], {
     silent: false,
+    env: { SITES_DIR: constants.SITES_DIR },
   });
 
   BuildProcesses.set({ [id]: builder });

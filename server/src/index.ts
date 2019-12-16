@@ -9,22 +9,29 @@ import builds from './routes/builds';
 import constants from './config';
 import BuildProcesses from './BuildProcesses';
 
-const { DB_FOLDER, PORT, FRONTEND_DIR } = constants;
+const { DB_DIR, PORT, FRONTEND_DIR, SITES_DIR, BUILDER_PATH } = constants;
 const app = express();
 
 const init = () => {
-  if (existsSync(DB_FOLDER)) return;
-  mkdirSync(DB_FOLDER);
+  (() => {
+    if (existsSync(DB_DIR)) return;
+    mkdirSync(DB_DIR);
+  })();
+  (() => {
+    if (existsSync(SITES_DIR)) return;
+    mkdirSync(SITES_DIR);
+  })();
 };
 
 const main = () => {
   init();
 
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use('/', express.static(__dirname + FRONTEND_DIR));
+  app.use('/', express.static(FRONTEND_DIR));
 
   app.post('/site', createSite);
-  app.get('/site/:id', getSite);
+  app.get('/sites/:id', getSite);
+  app.get('/sites', getSite);
   app.post('/build/:id', build);
   app.get('/builds', builds);
 

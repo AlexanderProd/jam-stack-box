@@ -10,9 +10,10 @@ export interface SiteObject {
 
 export interface Constants {
   PORT: number;
-  DB_FOLDER: string;
+  DB_DIR: string;
   FRONTEND_DIR: string;
   BUILDER_PATH: string;
+  SITES_DIR: string;
 }
 
 export interface BuildProcess {

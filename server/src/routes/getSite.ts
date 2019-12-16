@@ -5,23 +5,15 @@ import { SiteObject } from '../@types';
 
 const getSite = async (req: Request, res: Response) => {
   const { id } = req.params;
-  let site: SiteObject;
-
-  if (!id) {
-    return res.status(404).json({ error: 'No siteID provided!' });
-  }
+  let data: SiteObject | Array<SiteObject>;
 
   try {
-    site = await getFromDB(id);
+    data = await getFromDB(id);
   } catch (error) {
     return res.status(500).json({ error });
   }
 
-  if (!site) {
-    return res.status(404).json({ error: 'Site not found!' });
-  }
-
-  res.status(200).json(site);
+  res.status(200).json(data);
 };
 
 export default getSite;

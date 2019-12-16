@@ -1,8 +1,10 @@
-import { readFile, writeFile } from 'fs';
+import { readFile, readFileSync, writeFile, readdir } from 'fs';
 import { join } from 'path';
 
 import constants from '../config';
 import { SiteObject } from '../@types';
+
+const { DB_DIR } = constants;
 
 export const createSiteID = (): string => {
   return Math.random()
@@ -11,7 +13,7 @@ export const createSiteID = (): string => {
 };
 
 export const saveToDB = (id: string, payload: SiteObject): Promise<void> => {
-  const location = join(constants.DB_FOLDER, id);
+  const location = join(DB_DIR, id);
   const data = JSON.stringify(payload);
 
   return new Promise((resolve, reject) => {
@@ -24,18 +26,44 @@ export const saveToDB = (id: string, payload: SiteObject): Promise<void> => {
   });
 };
 
-export const getFromDB = (id: string): Promise<SiteObject> => {
-  const location = join(constants.DB_FOLDER, id);
+export function getFromDB(): Promise<Array<SiteObject>>;
+export function getFromDB(id: string): Promise<SiteObject>;
+export function getFromDB(
+  id?: string
+): Promise<SiteObject> | Promise<Array<SiteObject>> {
+  if (id) {
+    console.log(id);
+    const location = join(DB_DIR, id);
 
-  return new Promise((resolve, reject) => {
-    readFile(location, (err, data) => {
-      if (err) {
-        reject(err);
-      } else if (!data) {
-        reject(new Error('No site with id found!'));
-      } else {
-        resolve(JSON.parse(data.toString()));
-      }
+    return new Promise<SiteObject>((resolve, reject) => {
+      readFile(location, (err, data) => {
+        if (err) {
+          if (err.code === 'ENOENT') {
+            reject('No site with id found!');
+          } else {
+            reject(err);
+          }
+        } else {
+          resolve(JSON.parse(data.toString()));
+        }
+      });
     });
-  });
-};
+  } else {
+    const objects: Array<SiteObject> = [];
+
+    return new Promise<Array<SiteObject>>((resolve, reject) => {
+      readdir(DB_DIR, (err, files) => {
+        if (err) {
+          reject(err);
+        }
+        files.map(file => {
+          const filePath = join(DB_DIR, file);
+
+          const data = readFileSync(filePath);
+          objects.push(JSON.parse(data.toString()));
+        });
+        resolve(objects);
+      });
+    });
+  }
+}
