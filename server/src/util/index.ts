@@ -32,7 +32,6 @@ export function getFromDB(
   id?: string
 ): Promise<SiteObject> | Promise<Array<SiteObject>> {
   if (id) {
-    console.log(id);
     const location = join(DB_DIR, id);
 
     return new Promise<SiteObject>((resolve, reject) => {
