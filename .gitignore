@@ -144,6 +144,10 @@ bower_componets
 psd
 thumb
 sketch
-config.db
 
 # End of https://www.gitignore.io/api/node,code,react,macos
+
+builder/tmp/**/*
+server/db
+.devcontainer/
+sites-public/
