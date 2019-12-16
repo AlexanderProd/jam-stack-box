@@ -6,6 +6,7 @@ const { join } = require("path");
 const SITE_ID = argv[2];
 const REPO_URL = argv[3];
 const BUILD_COMMAND = argv[4];
+const DEPLOY_DIR = join(process.env.SITES_DIR, SITE_ID);
 const OUTPUT_DIR = join(
   __dirname,
   SITE_ID +
@@ -28,7 +29,10 @@ const main = async () => {
   //ToDo Make sure undefined is not passed as BUILD_COMMAND
   const build = execFile(__dirname + "/build.sh", [REPO_URL, BUILD_COMMAND], {
     cwd: OUTPUT_DIR,
-    shell: true
+    shell: true,
+    env: {
+      DEPLOY_DIR
+    }
   });
 
   // Use this for streaming build output to frontend.
@@ -36,12 +40,11 @@ const main = async () => {
 
   build.on("error", error => {
     process.send({ error });
+    finish();
   });
 
-  build.on("close", code => {
-    if (code === 0) {
-      finish();
-    }
+  build.on("close", () => {
+    finish();
   });
 
   process.on("message", msg => {
