@@ -1,6 +1,7 @@
 .git
 .cache
 server/db
+sites-public
 node_modules
 dist
 resources
