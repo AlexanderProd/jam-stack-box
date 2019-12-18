@@ -4,6 +4,7 @@ import { mkdirSync, existsSync } from 'fs';
 
 import createSite from './routes/createSite';
 import getSite from './routes/getSite';
+import delSite from './routes/delSite';
 import build from './routes/build';
 import builds from './routes/builds';
 import constants from './config';
@@ -32,6 +33,7 @@ const main = () => {
   app.post('/site', createSite);
   app.get('/sites/:id', getSite);
   app.get('/sites', getSite);
+  app.delete('/site/:id', delSite);
   app.post('/build/:id', build);
   app.get('/builds', builds);
 

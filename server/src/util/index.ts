@@ -1,4 +1,4 @@
-import { readFile, readFileSync, writeFile, readdir } from 'fs';
+import { readFile, readFileSync, writeFile, readdir, unlink } from 'fs';
 import { join } from 'path';
 
 import constants from '../config';
@@ -32,10 +32,10 @@ export function getFromDB(
   id?: string
 ): Promise<SiteObject> | Promise<Array<SiteObject>> {
   if (id) {
-    const location = join(DB_DIR, id);
+    const path = join(DB_DIR, id);
 
     return new Promise<SiteObject>((resolve, reject) => {
-      readFile(location, (err, data) => {
+      readFile(path, (err, data) => {
         if (err) {
           if (err.code === 'ENOENT') {
             reject('No site with id found!');
@@ -66,3 +66,16 @@ export function getFromDB(
     });
   }
 }
+
+export const delFromDB = (id: string): Promise<void> => {
+  const path = join(DB_DIR, id);
+
+  return new Promise((resolve, reject) => {
+    unlink(path, err => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
+};
