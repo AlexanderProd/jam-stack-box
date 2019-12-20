@@ -37,7 +37,7 @@ const main = () => {
   app.post('/build/:id', build);
   app.get('/builds', builds);
 
-  app.listen(PORT, () => console.log('App listening on port 3000!'));
+  app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 
   // make sure build processes stop gracefully once node app stops.
   process.on('exit', code => {

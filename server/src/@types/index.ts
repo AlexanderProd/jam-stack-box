@@ -9,7 +9,7 @@ export interface SiteObject {
 }
 
 export interface Constants {
-  PORT: number;
+  PORT: string | number;
   DB_DIR: string;
   FRONTEND_DIR: string;
   BUILDER_PATH: string;
