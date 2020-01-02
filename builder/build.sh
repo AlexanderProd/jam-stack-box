@@ -1,28 +1,35 @@
 #!/bin/bash
 
-readonly REPO_URL=$1
-readonly BUILD_COMMAND=$2
+TEMP_FOLDER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
 
-trap "exit" SIGHUP SIGINT SIGTERM
-
-variable_is_set() {
-  declare -p "$1" &>/dev/null
-}
+. ./build-functions.sh --source-only
 
 main() {
-  git clone $REPO_URL .
-  {
-    if variable_is_set $BUILD_COMMAND; then
-      npm install
-      $BUILD_COMMAND
-    else
-      yarn install
-      yarn build
-    fi
-  } && {
-    mkdir -p $DEPLOY_DIR
-    rsync -aru --delete ./public/ $DEPLOY_DIR
-  }
+  trap cleanup EXIT SIGHUP SIGINT SIGTERM
+
+  if [ $REPO_URL == "undefined" ]; then
+    exit 0
+  fi
+
+  mkdir $TEMP_FOLDER
+  cd $TEMP_FOLDER
+
+  echo git clone $REPO_URL
+  if git clone $REPO_URL .; then
+    echo "Cloned $REPO_URL."
+  else
+    echo "Cloning $REPO_URL failed!"
+    exit 1
+  fi
+
+  if [ -f "yarn.lock" ]; then
+    run_yarn
+  else
+    run_npm
+  fi
+  
+  mkdir -p $DEPLOY_DIR
+  deploy_files
 }
 
 main "$@"
