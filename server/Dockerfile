@@ -20,7 +20,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get -y update && \
   apt-get install -y --no-install-recommends \
   advancecomp \
-  apache2-utils \
+  apt-utils \
   autoconf \
   automake \
   bison \
@@ -115,7 +115,7 @@ RUN cd server && \
   npm install && \
   yarn build
 
-VOLUME [ "/data" ]
+VOLUME [ "/sites-public", "/db" ]
 
 EXPOSE 3000
 
