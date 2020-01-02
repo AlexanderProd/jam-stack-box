@@ -10,7 +10,7 @@ cleanup() {
 }
 
 run_custom_command() {
-  if [ $BUILD_COMMAND ]; then
+  if $BUILD_COMMAND; then
     echo "Successfully build with custom command \"$BUILD_COMMAND\"."
   else 
     echo "Custom build command \"$BUILD_COMMAND\" failed."
@@ -26,7 +26,7 @@ run_yarn() {
     exit 1
   fi
 
-  if [ $BUILD_COMMAND != "undefined" ]; then
+  if [ "$BUILD_COMMAND" != "undefined" ]; then
     run_custom_command
   else
     if yarn build; then
@@ -46,7 +46,7 @@ run_npm() {
     exit 1
   fi
 
-  if [ $BUILD_COMMAND != "undefined" ]; then
+  if [ "$BUILD_COMMAND" != "undefined" ]; then
     run_custom_command
   else
     if npm run build; then

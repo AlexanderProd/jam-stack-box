@@ -7,7 +7,7 @@ TEMP_FOLDER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
 main() {
   trap cleanup EXIT SIGHUP SIGINT SIGTERM
 
-  if [ $REPO_URL == "undefined" ]; then
+  if [ "$REPO_URL" == "undefined" ]; then
     exit 0
   fi
 
