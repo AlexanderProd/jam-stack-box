@@ -1,4 +1,5 @@
 .git
+.gitignore
 .cache
 server/db
 sites-public
@@ -7,3 +8,6 @@ dist
 resources
 LICENSE
 README.md
+Dockerfile
+.dockerignore
+docker-compose.yml
