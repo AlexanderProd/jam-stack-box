@@ -6,6 +6,14 @@ export interface SiteObject {
   source: string;
   domain?: string;
   buildCommand?: string;
+  remoteDeploy?: 'true' | 'false' | undefined;
+  localDeployPath?: string;
+  remoteDeployPath?: string;
+  sshHost?: string;
+  sshPort?: string;
+  sshUsername?: string;
+  sshPassword?: string;
+  sshKeyfilePath?: string;
 }
 
 export interface Constants {

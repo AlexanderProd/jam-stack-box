@@ -59,7 +59,17 @@ run_npm() {
 }
 
 deploy_files() {
-  if rsync -aru --delete ./public/ $DEPLOY_DIR; then
+  if [ "$REMOTE_DEPLOY" == "true" ]; then 
+    if rsync -aru --delete if [ "$SSH_KEYFILE_PATH" != "undefined"]; then echo "-e \"ssh -i $SSH_KEYFILE_PATH\"" fi $SSH_USERNAME@$SSH_HOST if [ $SSH_PORT != "undefined" ]; then echo ":$SSH_PORT"; fi :/$REMOTE_DEPLOY_PATH; then
+      echo "Sucessfully deployed!"
+      exit 0
+    else
+      echo "Deploy failed!"
+      exit 1
+    fi
+  fi
+  
+  if rsync -aru --delete ./public/ $LOCAL_DEPLOY_DIR; then
     echo "Sucessfully deployed!"
     exit 0
   else

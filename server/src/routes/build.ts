@@ -39,6 +39,14 @@ const build = async (req: Request, res: Response) => {
     REPO_URL: site.source,
     DEPLOY_DIR: join(SITES_DIR, site.id),
     BUILD_COMMAND: site.buildCommand,
+    REMOTE_DEPLOY: site.remoteDeploy,
+    LOCAL_DEPLOY_PATH: site.localDeployPath,
+    REMOTE_DEPLOY_PATH: site.remoteDeployPath,
+    SSH_HOST: site.sshHost,
+    SSH_PORT: site.sshPort,
+    SSH_USERNAME: site.sshUsername,
+    SSH_PASSWORD: site.sshPassword,
+    SSH_KEYFILE_PATH: site.sshKeyfilePath,
   };
 
   const builder = execFile(join(BUILDER_PATH, 'build.sh'), {
