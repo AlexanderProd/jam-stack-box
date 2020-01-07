@@ -4,9 +4,9 @@
   "main": "src/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "yarn build && NODE_ENV=development node dist/index.js",
+    "start": "yarn build && DOCKER=false node dist/index.js",
     "build": "rm -rf dist; tsc",
-    "dev": "NODE_ENV=development nodemon --watch 'src' -e 'ts,js' --ignore 'builder/**/*' --exec 'ts-node src'"
+    "dev": "DOCKER=false nodemon --watch 'src' -e 'ts,js' --ignore 'builder/**/*' --exec 'ts-node src'"
   },
   "dependencies": {
     "@types/express": "^4.17.2",
