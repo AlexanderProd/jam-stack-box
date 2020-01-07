@@ -9,16 +9,7 @@ services:
     ports:
       - 4757:3000
     environment:
-      - NODE_ENV=production
+      - DOCKER=TRUE
     volumes:
       - ~/.jamstackbox/sites-public:/sites-public/
       - ~/.jamstackbox/db:/db/
-
-  web:
-    image: nginx
-    container_name: jamstackbox_nginx
-    ports:
-      - 5000:80
-    volumes:
-      - ~/.jamstackbox/sites-public:/usr/share/nginx/html:ro
-      #- ~/.jamstackbox/nginx.conf:/etc/nginx/nginx.conf
