@@ -84,7 +84,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   libyaml-dev \
   mercurial \
   nasm \
-  nginx \
   optipng \
   pngcrush \
   rsync \
@@ -118,5 +117,7 @@ RUN cd server && \
 VOLUME [ "/sites-public", "/db" ]
 
 EXPOSE 3000
+
+ENV DOCKER=true
 
 CMD [ "node", "server/dist/index.js" ]
