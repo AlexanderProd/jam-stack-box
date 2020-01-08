@@ -1,4 +1,4 @@
-import express, { response } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import { mkdirSync, existsSync } from 'fs';
 
@@ -10,7 +10,7 @@ import builds from './routes/builds';
 import constants from './config';
 import BuildProcesses from './BuildProcesses';
 
-const { DB_DIR, PORT, FRONTEND_DIR, SITES_DIR, BUILDER_PATH } = constants;
+const { DB_DIR, PORT, FRONTEND_DIR, SITES_DIR } = constants;
 const app = express();
 
 const init = () => {
@@ -43,7 +43,6 @@ const main = () => {
   process.on('exit', code => {
     const runningBuilds = BuildProcesses.get();
     for (const key in runningBuilds) {
-      runningBuilds[key].disconnect();
       runningBuilds[key].kill(code);
     }
     process.exit(0);
