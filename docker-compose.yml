@@ -8,8 +8,6 @@ services:
     container_name: jamstackbox_server
     ports:
       - 4757:3000
-    environment:
-      - DOCKER=TRUE
     volumes:
       - ~/.jamstackbox/sites-public:/sites-public/
       - ~/.jamstackbox/db:/db/
