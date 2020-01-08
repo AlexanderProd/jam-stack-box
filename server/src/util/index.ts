@@ -58,6 +58,7 @@ export function getFromDB(
         files.map(file => {
           const filePath = join(DB_DIR, file);
 
+          // ToDo use readFile to avoid blocking the event loop.
           const data = readFileSync(filePath);
           objects.push(JSON.parse(data.toString()));
         });
