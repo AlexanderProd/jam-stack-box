@@ -35,18 +35,21 @@ const build = async (req: Request, res: Response) => {
   }
 
   const buildProperties = {
-    SITE_ID: site.id,
-    REPO_URL: site.source,
-    DEPLOY_DIR: join(SITES_DIR, site.id),
-    BUILD_COMMAND: site.buildCommand,
-    REMOTE_DEPLOY: site.remoteDeploy,
-    LOCAL_DEPLOY_PATH: site.localDeployPath,
-    REMOTE_DEPLOY_PATH: site.remoteDeployPath,
-    SSH_HOST: site.sshHost,
-    SSH_PORT: site.sshPort,
-    SSH_USERNAME: site.sshUsername,
-    SSH_PASSWORD: site.sshPassword,
-    SSH_KEYFILE_PATH: site.sshKeyfilePath,
+    SITE_ID: site.id ? site.id : 'undefined',
+    REPO_URL: site.source ? site.source : 'undefined',
+    BUILD_COMMAND: site.buildCommand ? site.buildCommand : 'undefined',
+    REMOTE_DEPLOY: site.remoteDeploy ? site.remoteDeploy : 'undefined',
+    LOCAL_DEPLOY_PATH: site.localDeployPath
+      ? site.localDeployPath
+      : join(SITES_DIR, site.name),
+    REMOTE_DEPLOY_PATH: site.remoteDeployPath
+      ? site.remoteDeployPath
+      : 'undefined',
+    SSH_HOST: site.sshHost ? site.sshHost : 'undefined',
+    SSH_PORT: site.sshPort ? site.sshPort : 'undefined',
+    SSH_USERNAME: site.sshUsername ? site.sshUsername : 'undefined',
+    SSH_PASSWORD: site.sshPassword ? site.sshPassword : 'undefined',
+    SSH_KEYFILE_PATH: site.sshKeyfilePath ? site.sshKeyfilePath : 'undefined',
   };
 
   const builder = execFile(join(BUILDER_PATH, 'build.sh'), {
