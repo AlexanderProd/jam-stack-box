@@ -10,12 +10,10 @@ module.exports = {
       watch: false,
       max_memory_restart: "1G",
       env: {
-        DOCKER: "false",
         PORT: 3000,
         NODE_ENV: "development"
       },
       env_production: {
-        DOCKER: "false",
         PORT: 3000,
         NODE_ENV: "production"
       }
