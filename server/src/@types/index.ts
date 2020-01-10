@@ -1,4 +1,4 @@
-import { ChildProcess } from 'child_process';
+import { Container } from 'dockerode';
 
 export interface SiteObject {
   id: string;
@@ -6,14 +6,7 @@ export interface SiteObject {
   source: string;
   domain?: string;
   buildCommand?: string;
-  remoteDeploy?: 'true' | 'false' | undefined;
-  localDeployPath?: string;
-  remoteDeployPath?: string;
-  sshHost?: string;
-  sshPort?: string;
-  sshUsername?: string;
-  sshPassword?: string;
-  sshKeyfilePath?: string;
+  deployDir?: string;
 }
 
 export interface Constants {
@@ -22,10 +15,14 @@ export interface Constants {
   FRONTEND_DIR: string;
   BUILDER_PATH: string;
   SITES_DIR: string;
+  BUILDER_IMAGE_TAG: string;
 }
 
 export interface BuildProcess {
-  [key: string]: ChildProcess;
+  [key: string]: {
+    status: 'prepare' | 'building';
+    container?: Container;
+  };
 }
 
 export interface BuildProcessesType {

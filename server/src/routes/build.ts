@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
-import { execFile } from 'child_process';
 import { join } from 'path';
 
-import constants from '../config';
 import { getFromDB } from '../util';
 import BuildProcesses from '../BuildProcesses';
 import { SiteObject } from '../@types';
-
-const { BUILDER_PATH, SITES_DIR } = constants;
+import { docker } from '..';
+import { createBuilderContainer } from '../docker';
 
 const build = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -29,46 +27,54 @@ const build = async (req: Request, res: Response) => {
   res.sendStatus(200);
 
   // Check if theres already one build process for this site running.
+  // If the active build process is in prepare stage return
+  // otherwise stop running build and start a new one.
   if (BuildProcesses.get()[id] !== undefined) {
-    const process = BuildProcesses.get()[id];
-    process.kill();
+    const runningBuild = BuildProcesses.get()[id];
+
+    if (runningBuild.status === 'prepare') {
+      return;
+    }
+
+    BuildProcesses.set({
+      [id]: { ...runningBuild, status: 'prepare' },
+    });
+
+    try {
+      const container = docker.getContainer(runningBuild.container.id);
+      await container.stop();
+      BuildProcesses.del(id);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const buildProperties = {
     SITE_ID: site.id ? site.id : 'undefined',
     REPO_URL: site.source ? site.source : 'undefined',
     BUILD_COMMAND: site.buildCommand ? site.buildCommand : 'undefined',
-    REMOTE_DEPLOY: site.remoteDeploy ? site.remoteDeploy : 'undefined',
-    LOCAL_DEPLOY_PATH: site.localDeployPath
-      ? site.localDeployPath
-      : join(SITES_DIR, site.name),
-    REMOTE_DEPLOY_PATH: site.remoteDeployPath
-      ? site.remoteDeployPath
-      : 'undefined',
-    SSH_HOST: site.sshHost ? site.sshHost : 'undefined',
-    SSH_PORT: site.sshPort ? site.sshPort : 'undefined',
-    SSH_USERNAME: site.sshUsername ? site.sshUsername : 'undefined',
-    SSH_PASSWORD: site.sshPassword ? site.sshPassword : 'undefined',
-    SSH_KEYFILE_PATH: site.sshKeyfilePath ? site.sshKeyfilePath : 'undefined',
+    DEPLOY_DIR: join('/sites-public/', id),
   };
 
-  const builder = execFile(join(BUILDER_PATH, 'build.sh'), {
-    cwd: BUILDER_PATH,
-    env: buildProperties,
-  });
+  try {
+    const container = await createBuilderContainer(buildProperties);
+    const stream = await container.attach({
+      stream: true,
+      stdout: true,
+      stderr: true,
+      tty: true,
+    });
 
-  BuildProcesses.set({ [id]: builder });
-
-  builder.stdout.setEncoding('utf8');
-  builder.stdout.on('data', data => console.log(data.toString()));
-
-  builder.stderr.setEncoding('utf8');
-  builder.stderr.on('data', data => console.log(data.toString()));
-
-  builder.on('close', code => {
-    console.log('Builder closed with code:', code);
-    BuildProcesses.del(id);
-  });
+    BuildProcesses.set({ [id]: { status: 'building', container } });
+    stream.pipe(process.stdout);
+    stream.on('end', () => {
+      console.log('Container stopped');
+      BuildProcesses.del(id);
+    });
+    container.start();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default build;

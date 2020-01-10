@@ -4,15 +4,11 @@ import { createSiteID, saveToDB } from '../util';
 import { SiteObject } from '../@types';
 
 const createSite = async (req: Request, res: Response) => {
-  const { name, source, domain, buildCommand } = req.body;
   const id = createSiteID();
 
   const data: SiteObject = {
     id,
-    name,
-    source,
-    domain,
-    buildCommand,
+    ...req.body,
   };
 
   try {
