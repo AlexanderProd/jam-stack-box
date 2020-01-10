@@ -27,13 +27,6 @@ main() {
   else
     run_npm
   fi
-  
-  if [ "$LOCAL_DEPLOY_PATH" != "true" ]; then
-    if ! mkdir -p $LOCAL_DEPLOY_PATH; then
-      echo "Creating $LOCAL_DEPLOY_PATH failed!"
-      exit 1
-    fi
-  fi
 
   deploy_files
 }
