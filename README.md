@@ -11,7 +11,10 @@ JamStackBox takes GitHub repositories containing GatsbyJS sites and builts them 
 
 ## Prerequisites
 
-- You need to have a running Docker instance on your machine. ⚠️ It currently only works with Docker on Linux or MacOS listening to `/var/run/docker.sock`.
+- You need to have a running Docker instance on your machine.
+  ⚠️ It currently only works with Docker on Linux or MacOS listening to `/var/run/docker.sock`.
+- Even though its called JAMStackBox, currently only sites based on [GatsbyJS](https://www.gatsbyjs.org) are supported.
+  Feel free to contribute by editing the builder to support other static site generators.
 
 ## Start
 
