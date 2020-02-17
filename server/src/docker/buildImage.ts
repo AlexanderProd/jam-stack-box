@@ -1,5 +1,3 @@
-import { join } from 'path';
-
 import { docker } from '..';
 import constants from '../config';
 
@@ -17,7 +15,13 @@ const buildImage = (): Promise<void> => {
       );
 
       stream.setEncoding('utf8');
-      stream.pipe(process.stdout, { end: true });
+      stream.on('data', data => {
+        try {
+          console.log(JSON.parse(data.toString()).stream);
+        } catch (error) {
+          return;
+        }
+      });
 
       stream.on('end', () => {
         resolve();
