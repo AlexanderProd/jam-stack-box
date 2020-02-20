@@ -9,13 +9,11 @@ export interface SiteObject {
   deployDir?: string;
 }
 
-export interface Constants {
-  PORT: string | number;
-  DB_DIR: string;
-  FRONTEND_DIR: string;
-  BUILDER_PATH: string;
-  SITES_DIR: string;
-  BUILDER_IMAGE_TAG: string;
+export interface BuildEnvVars {
+  SITE_ID: string;
+  REPO_URL: string;
+  BUILD_COMMAND: string;
+  DEPLOY_DIR: string;
 }
 
 export interface BuildProcess {
@@ -26,8 +24,16 @@ export interface BuildProcess {
 }
 
 export interface BuildProcessesType {
-  processes: BuildProcess;
+  processes: BuildProcess[];
   get: Function;
   set: Function;
   del: Function;
+}
+
+export interface EventType {
+  id: string;
+  name: string;
+  site: SiteObject;
+  status: 'prepare' | 'building' | 'failure' | 'sucess';
+  data: Date;
 }
