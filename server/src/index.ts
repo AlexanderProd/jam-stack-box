@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { mkdirSync, existsSync } from 'fs';
 import Docker from 'dockerode';
+import { existsSync, mkdirSync } from 'fs';
 
 import createSite from './routes/createSite';
 import getSite from './routes/getSite';
@@ -12,37 +12,26 @@ import constants from './config';
 import BuildProcesses from './BuildProcesses';
 import { checkBuilderImage, buildImage } from './docker';
 
-const { DB_DIR, PORT, FRONTEND_DIR, SITES_DIR } = constants;
+const { PORT, FRONTEND_DIR, DB_DIR, SITES_DIR } = constants;
+
 const app = express();
 export const docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
-const init = (): Promise<void> => {
-  (() => {
-    if (existsSync(DB_DIR)) return;
-    mkdirSync(DB_DIR);
-  })();
-  (() => {
-    if (existsSync(SITES_DIR)) return;
-    mkdirSync(SITES_DIR);
-  })();
-
-  return new Promise(async (resolve, reject) => {
-    try {
-      const isAvailable = await checkBuilderImage();
-
-      if (isAvailable === false) {
-        await buildImage();
-      }
-      resolve();
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
 const main = async () => {
   try {
-    await init();
+    const isAvailable = await checkBuilderImage();
+
+    if (!isAvailable) {
+      await buildImage();
+    }
+
+    if (!existsSync(DB_DIR)) {
+      mkdirSync(DB_DIR);
+    }
+
+    if (!existsSync(SITES_DIR)) {
+      mkdirSync(SITES_DIR);
+    }
   } catch (error) {
     console.error(error);
     process.exit(1);
