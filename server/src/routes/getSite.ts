@@ -1,19 +1,25 @@
 import { Request, Response } from 'express';
 
-import { getFromDB } from '../util';
-import { SiteObject } from '../@types';
+import { Site } from '../sql';
 
 const getSite = async (req: Request, res: Response) => {
   const { id } = req.params;
-  let data: SiteObject | Array<SiteObject>;
+  let data: Site | Site[];
 
   try {
-    data = await getFromDB(id);
+    if (id) {
+      data = await Site.findByPk(id);
+    } else {
+      data = await Site.findAll();
+    }
+
+    if (!data) {
+      return res.status(404).json({ error: 'Site not found!' });
+    }
+    res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ error });
   }
-
-  res.status(200).json(data);
 };
 
 export default getSite;

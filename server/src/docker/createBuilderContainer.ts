@@ -2,14 +2,13 @@ import { Container } from 'dockerode';
 
 import { docker } from '..';
 import constants from '../config';
+import { BuildEnvVars } from '../@types';
 
-const createBuilderContainer = (env: {
-  [key: string]: string;
-}): Promise<Container> => {
+const createBuilderContainer = (env: BuildEnvVars): Promise<Container> => {
   const envStrings: Array<string> = [];
 
-  for (const key in env) {
-    envStrings.push(`${key}=${env[key]}`);
+  for (const [key, value] of Object.entries(env)) {
+    envStrings.push(`${key}=${value}`);
   }
 
   return new Promise(async (resolve, reject) => {

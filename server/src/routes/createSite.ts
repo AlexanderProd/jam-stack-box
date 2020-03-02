@@ -1,23 +1,21 @@
 import { Request, Response } from 'express';
 
-import { createSiteID, saveToDB } from '../util';
-import { SiteObject } from '../@types';
+import { Site } from '../sql';
+import { sanitizeName } from '../util';
 
 const createSite = async (req: Request, res: Response) => {
-  const id = createSiteID();
-
-  const data: SiteObject = {
-    id,
+  const data: Site = {
     ...req.body,
+    name: sanitizeName(req.body.name),
+    displayName: req.body.name,
   };
 
   try {
-    await saveToDB(id, data);
+    const newSite = await Site.create(data);
+    res.status(200).json({ siteCreated: newSite.id });
   } catch (error) {
-    return res.status(500).json({ error });
+    return res.status(500).json({ error: String(error) });
   }
-
-  res.status(200).json({ siteCreated: id });
 };
 
 export default createSite;

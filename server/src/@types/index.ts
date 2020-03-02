@@ -1,5 +1,7 @@
 import { Container } from 'dockerode';
 
+import { Event } from '../sql';
+
 export interface SiteObject {
   id: string;
   name: string;
@@ -20,6 +22,7 @@ export interface BuildProcess {
   [key: string]: {
     status: 'prepare' | 'building';
     container?: Container;
+    event?: Event;
   };
 }
 
@@ -34,6 +37,7 @@ export interface EventType {
   id: string;
   name: string;
   site: SiteObject;
-  status: 'prepare' | 'building' | 'failure' | 'sucess';
-  data: Date;
+  status: 'prepare' | 'building' | 'failure' | 'sucess' | 'stopped';
+  description: string | null;
+  createdAt: Date;
 }

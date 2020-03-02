@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
 
-import { delFromDB } from '../util';
 import BuildProcesses from '../BuildProcesses';
+import { Site } from '../sql';
 
 const delSite = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (!id) {
+    return res.status(404).json({ error: 'No siteID provided!' });
+  }
 
   if (BuildProcesses.get()[id] !== undefined) {
     return res.json({
@@ -13,7 +17,8 @@ const delSite = async (req: Request, res: Response) => {
   }
 
   try {
-    await delFromDB(id);
+    const site = await Site.findByPk(id);
+    await site.destroy();
   } catch (error) {
     return res.status(500).json({ error });
   }

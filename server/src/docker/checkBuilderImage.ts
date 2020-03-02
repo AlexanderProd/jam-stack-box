@@ -1,4 +1,5 @@
 import { docker } from '..';
+
 import constants from '../config';
 
 const checkBuilderImage = (): Promise<boolean> => {
