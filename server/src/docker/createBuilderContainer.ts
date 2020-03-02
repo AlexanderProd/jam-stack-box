@@ -2,7 +2,7 @@ import { Container } from 'dockerode';
 
 import { docker } from '..';
 import constants from '../config';
-import { BuildEnvVars } from '../@types';
+import { BuildEnvVars } from '../types';
 
 const createBuilderContainer = (env: BuildEnvVars): Promise<Container> => {
   const envStrings: Array<string> = [];

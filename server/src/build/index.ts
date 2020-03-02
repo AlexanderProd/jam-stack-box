@@ -2,7 +2,7 @@ import { join } from 'path';
 
 import BuildProcesses from '../BuildProcesses';
 import { createBuilderContainer } from '../docker';
-import { BuildEnvVars } from '../@types';
+import { BuildEnvVars } from '../types';
 import { saveBuildLog } from '../util';
 import { Site, Event } from '../sql';
 import { docker } from '..';
