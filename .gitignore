@@ -148,6 +148,6 @@ sketch
 # End of https://www.gitignore.io/api/node,code,react,macos
 
 builder/tmp/**/*
-server/db
+db
 .devcontainer/
 sites-public/
