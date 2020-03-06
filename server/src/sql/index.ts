@@ -83,8 +83,7 @@ Site.init(
 Event.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUIDV4,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
