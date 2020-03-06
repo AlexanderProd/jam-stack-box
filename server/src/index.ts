@@ -8,6 +8,7 @@ import getSite from './routes/getSite';
 import delSite from './routes/delSite';
 import build from './routes/build';
 import builds from './routes/builds';
+import events from './routes/events';
 import constants from './config';
 import BuildProcesses from './BuildProcesses';
 import { checkBuilderImage, buildImage } from './docker';
@@ -46,6 +47,7 @@ const main = async () => {
   app.delete('/site/:id', delSite);
   app.post('/build/:id', build);
   app.get('/builds', builds);
+  app.get('/events', events);
 
   app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 
