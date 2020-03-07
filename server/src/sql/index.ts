@@ -117,3 +117,5 @@ Site.hasMany(Event, {
   foreignKey: 'siteId',
   as: 'events',
 });
+
+Event.belongsTo(Site, { targetKey: 'id' });
