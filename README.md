@@ -11,6 +11,8 @@ It takes GitHub repositories containing GatsbyJS sites and builts them once an P
 
 The build happens inside a Docker container to assure that a stable enviroment is provided. Once the build is finished the static files are saved to a dedicated folder inside of `sites-public`.
 
+Feel free to contact me on Twitter [@alexanderhorl](https://twitter.com/alexanderhorl) or send me a mail (on my GitHub profile) if you like this project or would want to know more about it. 
+
 ## ⚠️ Prerequisites
 
 - You need to have a running Docker instance on your machine.
