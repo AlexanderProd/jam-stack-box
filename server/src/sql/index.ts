@@ -104,18 +104,14 @@ Event.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    siteId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
   },
   { sequelize: sequelize, tableName: 'events', freezeTableName: true }
 );
 
-Site.hasMany(Event, {
+/* Site.hasMany(Event, {
   sourceKey: 'id',
   foreignKey: 'siteId',
   as: 'events',
-});
+}); */
 
 Event.belongsTo(Site, { targetKey: 'id' });
