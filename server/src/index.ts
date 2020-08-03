@@ -9,9 +9,11 @@ import delSite from './routes/delSite';
 import build from './routes/build';
 import builds from './routes/builds';
 import events from './routes/events';
+import authenticate from './routes/authenticate';
 import constants from './config';
-import BuildProcesses from './BuildProcesses';
 import { checkBuilderImage, buildImage } from './docker';
+import { withAuth } from './middlewares';
+import { stopRunningBuilds } from './util';
 
 const { PORT, FRONTEND_DIR, DB_DIR, SITES_DIR } = constants;
 
@@ -41,25 +43,20 @@ const main = async () => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use('/', express.static(FRONTEND_DIR));
 
-  app.post('/site', createSite);
+  app.post('/site', withAuth, createSite);
   app.get('/sites/:id', getSite);
   app.get('/sites', getSite);
-  app.delete('/site/:id', delSite);
+  app.delete('/site/:id', withAuth, delSite);
   app.post('/build/:id', build);
   app.get('/builds', builds);
   app.get('/events', events);
+  app.post('/authenticate', authenticate);
 
   app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 
   // make sure build processes stop gracefully once node app stops.
   process.on('exit', code => {
-    const runningBuilds = BuildProcesses.get();
-    for (const id in runningBuilds) {
-      if (runningBuilds[id].container !== undefined) {
-        const container = docker.getContainer(runningBuilds[id].container.id);
-        container.kill({ signal: code });
-      }
-    }
+    stopRunningBuilds(code);
     process.exit(code);
   });
 };

@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  server:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./db:/home/db"
+      - "./builds-out:/home/builds-out"
+      - "./sites-public:/home/sites-public"
+
+  mongo:
+    image: mongo
+    volumes:
+      - "./mongodb:/data/db"

@@ -1,0 +1,12 @@
+db
+mongodb
+sites-public
+builds-out
+node_modules
+dist
+.cache
+.vscode
+resources
+.gitignore
+LICENSE
+README.md

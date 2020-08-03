@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Event } from '../sql';
+import { Event, Site } from '../sql';
 
 const events = async (req: Request, res: Response) => {
   const { id, limit, skip } = req.query;
@@ -15,7 +15,19 @@ const events = async (req: Request, res: Response) => {
     if (id) {
       data = await Event.findByPk(id);
     } else {
-      data = await Event.findAndCountAll({ limit: limit, offset: skip });
+      data = await Event.findAndCountAll({
+        limit: limit,
+        offset: skip,
+        /* attributes: [
+          'id',
+          'name',
+          'display-name',
+          'status',
+          'description',
+          'log',
+        ], */
+        include: [{ model: Site, attributes: ['display-name'] }],
+      });
     }
 
     if (!data) {

@@ -1,5 +1,8 @@
 import { Event } from '../sql';
 
+import BuildProcesses from '../BuildProcesses';
+import { docker } from '..';
+
 export const isProd = process.env.NODE_ENV === 'production';
 
 export const createSiteID = (): string => {
@@ -29,3 +32,17 @@ export const sanitizeName = (name: string) =>
     .replace(/\s/g, '-')
     .toLowerCase()
     .substr(0, 20);
+
+/*
+ ** This stops the currently running build processes in case of a termination signal to the app.
+ */
+export const stopRunningBuilds = (code: number) => {
+  const runningBuilds = BuildProcesses.get();
+
+  for (const id in runningBuilds) {
+    if (runningBuilds[id].container !== undefined) {
+      const container = docker.getContainer(runningBuilds[id].container.id);
+      container.kill({ signal: code });
+    }
+  }
+};
