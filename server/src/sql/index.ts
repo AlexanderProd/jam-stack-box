@@ -26,6 +26,7 @@ export class Site extends Model {
   public displayName!: string | null;
   public source!: string | null;
   public buildCommand!: string | null;
+  public githubAccessToken!: string | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -63,6 +64,7 @@ Site.init(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     displayName: {
       type: DataTypes.STRING,
@@ -77,7 +79,7 @@ Site.init(
       allowNull: true,
     },
   },
-  { sequelize: sequelize, tableName: 'sites', freezeTableName: true }
+  { sequelize: sequelize, tableName: 'sites' }
 );
 
 Event.init(
@@ -86,6 +88,10 @@ Event.init(
       type: DataTypes.UUIDV4,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
+      allowNull: false,
+    },
+    siteId: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     name: {
@@ -105,13 +111,11 @@ Event.init(
       allowNull: true,
     },
   },
-  { sequelize: sequelize, tableName: 'events', freezeTableName: true }
+  { sequelize: sequelize, tableName: 'events' }
 );
 
-/* Site.hasMany(Event, {
+Site.hasMany(Event, {
   sourceKey: 'id',
   foreignKey: 'siteId',
   as: 'events',
-}); */
-
-Event.belongsTo(Site, { targetKey: 'id' });
+});
