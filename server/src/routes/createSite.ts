@@ -12,7 +12,9 @@ const createSite = async (req: Request, res: Response) => {
 
   try {
     const newSite = await Site.create(data);
-    res.status(200).json({ siteCreated: newSite.id });
+    res
+      .status(200)
+      .json({ siteCreated: { id: newSite.id, name: newSite.name } });
   } catch (error) {
     return res.status(500).json({ error: String(error) });
   }
