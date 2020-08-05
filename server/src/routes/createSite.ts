@@ -10,6 +10,21 @@ const createSite = async (req: Request, res: Response) => {
     displayName: req.body.name,
   };
 
+  /**
+   * Check if site name has been used already.
+   */
+  try {
+    const result = await Site.findOne({
+      where: { name: data.name },
+      rejectOnEmpty: false,
+    });
+    if (result) {
+      return res.status(500).json({ error: 'Site name already used!' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: String(error) });
+  }
+
   try {
     const newSite = await Site.create(data);
     res
