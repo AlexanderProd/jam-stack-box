@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Op } from 'sequelize';
 
 import startBuild from '../build';
 import { Site } from '../sql';
@@ -11,14 +12,12 @@ const build = async (req: Request, res: Response) => {
     return res.status(404).json({ error: 'No siteID provided!' });
   }
 
-  try {
-    site = await Site.findByPk(id);
-  } catch (error) {
-    return res.status(500).json({ error });
-  }
+  const condition = {
+    [Op.or]: [{ id: { [Op.eq]: id } }, { name: { [Op.eq]: id } }],
+  };
 
   try {
-    site = await Site.findOne({ where: { name: id } });
+    site = await Site.findOne({ where: condition });
   } catch (error) {
     return res.status(500).json({ error });
   }
