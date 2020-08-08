@@ -12,7 +12,7 @@ export interface BuildEnvVars {
 
 export interface BuildProcess {
   [key: string]: {
-    status: 'prepare' | 'building';
+    status: 'preparing' | 'building';
     container?: Container;
     event?: Event;
   };

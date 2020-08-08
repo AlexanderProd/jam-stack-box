@@ -19,14 +19,14 @@ const startBuild = async (site: Site) => {
   if (BuildProcesses.get()[id] !== undefined) {
     const runningBuild = BuildProcesses.get()[id];
 
-    if (runningBuild.status === 'prepare') {
+    if (runningBuild.status === 'preparing') {
       return;
     }
 
     BuildProcesses.set({
-      [id]: { ...runningBuild, status: 'prepare' },
+      [id]: { ...runningBuild, status: 'preparing' },
     });
-    event = await site.createEvent({ siteId: site.id, status: 'prepare' });
+    event = await site.createEvent({ siteId: site.id, status: 'preparing' });
 
     try {
       const container = docker.getContainer(runningBuild.container.id);
@@ -37,7 +37,7 @@ const startBuild = async (site: Site) => {
       console.error(error);
     }
   } else {
-    event = await site.createEvent({ siteId: site.id, status: 'prepare' });
+    event = await site.createEvent({ siteId: site.id, status: 'preparing' });
   }
 
   const buildEnvVars: BuildEnvVars = {
