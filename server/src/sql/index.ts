@@ -11,11 +11,12 @@ import {
 import { join } from 'path';
 
 import constants from '../config';
-import { createSiteID } from '../util';
+import { createSiteID, isProd } from '../util';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: join(constants.DB_DIR, 'main.db'),
+  logging: !isProd,
 });
 
 sequelize.sync();
@@ -27,6 +28,7 @@ export class Site extends Model {
   public source!: string | null;
   public buildCommand!: string | null;
   public githubAccessToken!: string | null;
+  public siteURL!: string | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -46,7 +48,7 @@ export class Event extends Model {
   public name!: string | null;
   public status!: 'prepare' | 'building' | 'failure' | 'sucess' | 'stopped';
   public description!: string | null;
-  public event!: string | null;
+  public log!: string | null;
   public siteId!: string;
 
   public readonly createdAt!: Date;
@@ -75,6 +77,14 @@ Site.init(
       allowNull: true,
     },
     buildCommand: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    githubAccessToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    siteURL: {
       type: DataTypes.STRING,
       allowNull: true,
     },

@@ -2,20 +2,12 @@ import { Container } from 'dockerode';
 
 import { Event } from '../sql';
 
-export interface SiteObject {
-  id: string;
-  name: string;
-  source: string;
-  domain?: string;
-  buildCommand?: string;
-  deployDir?: string;
-}
-
 export interface BuildEnvVars {
   SITE_ID: string;
   REPO_URL: string;
   BUILD_COMMAND: string;
   DEPLOY_DIR: string;
+  GITHUB_ACCESS_TOKEN: string;
 }
 
 export interface BuildProcess {
@@ -31,13 +23,4 @@ export interface BuildProcessesType {
   get: Function;
   set: Function;
   del: Function;
-}
-
-export interface EventType {
-  id: string;
-  name: string;
-  site: SiteObject;
-  status: 'prepare' | 'building' | 'failure' | 'sucess' | 'stopped';
-  description: string | null;
-  createdAt: Date;
 }
