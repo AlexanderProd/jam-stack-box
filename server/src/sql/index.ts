@@ -46,7 +46,7 @@ export class Site extends Model {
 export class Event extends Model {
   public id!: number;
   public name!: string | null;
-  public status!: 'prepare' | 'building' | 'failure' | 'sucess' | 'stopped';
+  public status!: 'preparing' | 'building' | 'failed' | 'success' | 'stopped';
   public description!: string | null;
   public log!: string | null;
   public siteId!: string;
