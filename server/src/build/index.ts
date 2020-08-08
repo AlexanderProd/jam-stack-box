@@ -67,7 +67,7 @@ const startBuild = async (site: Site) => {
     stream.on('end', () => {
       console.log('Container stopped');
       BuildProcesses.del(id);
-      event.update({ status: 'finished' });
+      event.update({ status: 'success' });
     });
     stream.on('error', code => {
       const errorMessage = `Container returned error code ${code}`;
