@@ -10,6 +10,7 @@ import build from './routes/build';
 import builds from './routes/builds';
 import events from './routes/events';
 import authenticate from './routes/authenticate';
+import badge from './routes/badge';
 import constants from './config';
 import { checkBuilderImage, buildImage } from './docker';
 import { withAuth } from './middlewares';
@@ -51,6 +52,7 @@ const main = async () => {
   app.get('/builds', builds);
   app.get('/events', events);
   app.post('/authenticate', authenticate);
+  app.get('/badge/:id', badge);
 
   app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 

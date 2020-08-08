@@ -1,6 +1,6 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <h1 align="center">
-  <img alt="Logo" src="resources/logo.png" height="100px" />
+  <img alt="Logo" src="frontend/assets/logo.png" height="100px" />
   <br/>
   JAMStackBox
 </h1>
@@ -11,13 +11,13 @@ It takes GitHub repositories containing GatsbyJS sites and builts them once an P
 
 The build happens inside a Docker container to assure that a stable enviroment is provided. Once the build is finished the static files are saved to a dedicated folder inside of `sites-public`.
 
-Feel free to contact me on Twitter [@alexanderhorl](https://twitter.com/alexanderhorl) or send me a mail (on my GitHub profile) if you like this project or would want to know more about it. 
+Feel free to contact me on Twitter [@alexanderhorl](https://twitter.com/alexanderhorl) or send me a mail (on my GitHub profile) if you like this project or would want to know more about it.
 
 ## ⚠️ Prerequisites
 
 - You need to have a running Docker instance on your machine.
   Currently only Docker on Linux or MacOS is supported.
-- Even though its called JAMStackBox, currently only sites based on [GatsbyJS](https://www.gatsbyjs.org) are supported.
+- Currently only sites based on [GatsbyJS](https://www.gatsbyjs.org) are supported.
   Feel free to contribute by editing the builder to support other static site generators.
 
 ## 🚀 Quick Start
@@ -38,8 +38,8 @@ Feel free to contact me on Twitter [@alexanderhorl](https://twitter.com/alexande
 
 3.  **Start the server process**
 
-    The server process is a NodeJS server listening to a specific port, default 3000.
-    You can change the port by providing a PORT ENV variable. (e.g. PORT=2345).
+    The server process is a NodeJS server listening to a specific port, default `3000`.
+    You can change the port by providing a `PORT` enviroment variable.
 
     The server process can be started manually.
 
@@ -51,6 +51,12 @@ Feel free to contact me on Twitter [@alexanderhorl](https://twitter.com/alexande
 
     ```sh
     $ pm2 start
+    ```
+
+    or
+
+    ```sh
+    $ pm2 start --env production
     ```
 
 ## Usage
@@ -76,9 +82,9 @@ Expects content type `x-www-form-urlencoded`.
 | name   | true     | Name of the site, only used for front-end purposes.                                                                       |
 | source | true     | GitHub link to a repository with the site content. <br/> ( e.g. https://github.com/AlexanderProd/gatsby-shopify-starter ) |
 
-### POST `/build/[id]`
+### POST `/build/[id or name]`
 
-Triggers a new build for the site with the ID. Returns an error if the ID doesn't exist.
+Triggers a new build for the site with the ID.
 
 ### GET `/sites`
 
@@ -92,9 +98,14 @@ Returns all details of a specific site.
 
 Deletes the site with given ID.
 
+### GET `/badge/[id or name]`
+
+Returns an svg image with the current state of a site, for example building or success.
+
 ## 📌 ToDo
 
 - [ ] Use dynamic NodeJS version in Builder using NVM.
+- [ ] Remote Deployment
 - [ ] Add frontend to control sites and builds.
 - [ ] Add support for other static site generators than Gatsby.
 - [ ] Deploy status badge.
