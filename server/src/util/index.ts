@@ -31,7 +31,7 @@ export const sanitizeName = (name: string) =>
     .trim()
     .replace(/\s/g, '-')
     .toLowerCase()
-    .substr(0, 20);
+    .substr(0, 40);
 
 /*
  ** This stops the currently running build processes in case of a termination signal to the app.
