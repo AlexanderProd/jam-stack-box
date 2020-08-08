@@ -100,10 +100,6 @@ Event.init(
       primaryKey: true,
       allowNull: false,
     },
-    siteId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -126,7 +122,6 @@ Event.init(
 
 Site.hasMany(Event, {
   sourceKey: 'id',
-  foreignKey: 'siteId',
   as: 'events',
 });
 
