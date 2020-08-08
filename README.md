@@ -102,6 +102,8 @@ Deletes the site with given ID.
 
 Returns an svg image with the current state of a site, for example building or success.
 
+<img alt="success badge" src="frontend/assets/success-status.svg" />
+
 ## 📌 ToDo
 
 - [ ] Use dynamic NodeJS version in Builder using NVM.
