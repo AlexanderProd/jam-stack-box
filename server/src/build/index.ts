@@ -65,7 +65,6 @@ const startBuild = async (site: Site) => {
     saveBuildLog(event, stream);
 
     stream.on('end', () => {
-      console.log('Container stopped');
       BuildProcesses.del(id);
       event.update({ status: 'success' });
     });

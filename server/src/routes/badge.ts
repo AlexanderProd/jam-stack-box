@@ -13,19 +13,6 @@ const readFilePromise = promisify(readFile);
 const badge = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const succesBadge = String(
-    await readFilePromise(join(assetsFolder, 'success-status.svg'))
-  );
-  const buildingBade = String(
-    await readFilePromise(join(assetsFolder, 'building-status.svg'))
-  );
-  const failedBadge = String(
-    await readFilePromise(join(assetsFolder, 'failed-status.svg'))
-  );
-  const errorBadge = String(
-    await readFilePromise(join(assetsFolder, 'error-status.svg'))
-  );
-
   const header = {
     'Cache-Control': 'private',
     'Content-Type': 'image/svg+xml',
@@ -44,37 +31,59 @@ const badge = async (req: Request, res: Response) => {
     });
 
     switch (lastEvent[0].status) {
-      case 'success':
+      case 'success': {
+        const succesBadge = String(
+          await readFilePromise(join(assetsFolder, 'success-status.svg'))
+        );
         return res
           .header(header)
           .send(succesBadge)
           .status(200);
+      }
 
       case 'failed':
+        const failedBadge = String(
+          await readFilePromise(join(assetsFolder, 'failed-status.svg'))
+        );
         return res
           .header(header)
           .send(failedBadge)
           .status(200);
 
-      case 'preparing':
+      case 'preparing': {
+        const buildingBade = String(
+          await readFilePromise(join(assetsFolder, 'building-status.svg'))
+        );
         return res
           .header(header)
           .send(buildingBade)
           .status(200);
+      }
 
-      case 'building':
+      case 'building': {
+        const buildingBade = String(
+          await readFilePromise(join(assetsFolder, 'building-status.svg'))
+        );
         return res
           .header(header)
           .send(buildingBade)
           .status(200);
+      }
 
-      default:
+      default: {
+        const succesBadge = String(
+          await readFilePromise(join(assetsFolder, 'success-status.svg'))
+        );
         return res
           .header(header)
           .send(succesBadge)
           .status(200);
+      }
     }
   } catch (error) {
+    const errorBadge = String(
+      await readFilePromise(join(assetsFolder, 'error-status.svg'))
+    );
     return res
       .header(header)
       .send(errorBadge)
