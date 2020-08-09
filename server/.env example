@@ -1,0 +1,4 @@
+PORT=3000
+SECRET=yHSHGuYkD4YMryOU1mJUId4zUihMNg
+PASSWORD=admin
+NODE_ENV=development
