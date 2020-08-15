@@ -55,7 +55,9 @@ const main = async () => {
   app.post('/authenticate', authenticate);
   app.get('/badge/:id', badge);
 
-  app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
+  app.listen(PORT, () =>
+    console.log(`App listening on port ${PORT} in ${process.env.NODE_ENV}!`)
+  );
 
   // make sure build processes stop gracefully once node app stops.
   process.on('exit', code => {

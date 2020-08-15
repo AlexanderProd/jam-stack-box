@@ -19,8 +19,6 @@ const sequelize = new Sequelize({
   logging: !isProd,
 });
 
-sequelize.sync();
-
 export class Site extends Model {
   public id!: string;
   public name!: string;
@@ -50,6 +48,7 @@ export class Event extends Model {
   public description!: string | null;
   public log!: string | null;
   public siteId!: string;
+  public buildTime!: number | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -116,6 +115,10 @@ Event.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    buildTime: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
   },
   { sequelize: sequelize, tableName: 'events' }
 );
@@ -126,3 +129,5 @@ Site.hasMany(Event, {
 });
 
 Event.belongsTo(Site);
+
+sequelize.sync({ alter: true });

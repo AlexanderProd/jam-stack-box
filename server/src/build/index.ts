@@ -3,7 +3,7 @@ import { join } from 'path';
 import BuildProcesses from '../BuildProcesses';
 import { createBuilderContainer } from '../docker';
 import { BuildEnvVars } from '../types';
-import { saveBuildLog } from '../util';
+import { saveBuildLog, calcuateBuildTime } from '../util';
 import { Site, Event } from '../sql';
 import { docker } from '..';
 
@@ -66,7 +66,7 @@ const startBuild = async (site: Site) => {
 
     stream.on('end', () => {
       BuildProcesses.del(id);
-      event.update({ status: 'success' });
+      event.update({ status: 'success', buildTime: calcuateBuildTime(event) });
     });
     stream.on('error', code => {
       const errorMessage = `Container returned error code ${code}`;
