@@ -110,5 +110,6 @@ Returns an svg image with the current state of a site, for example building or s
 - [ ] Remote Deployment
 - [ ] Add frontend to control sites and builds.
 - [ ] Add support for other static site generators than Gatsby.
+- [ ] Implement a message broker.
 - [x] Deploy status badge.
 - [x] Split server and builder into dedicated docker containers.
