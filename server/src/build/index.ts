@@ -69,8 +69,8 @@ const startBuild = async (site: Site) => {
       BuildProcesses.del(id);
       event.update({ status: 'success', buildTime: calcuateBuildTime(event) });
 
-      if(site.buildCommand) {
-        exec(site.buildCommand);
+      if(site.postBuildCommand) {
+        exec(site.postBuildCommand);
       }
     });
     stream.on('error', code => {
