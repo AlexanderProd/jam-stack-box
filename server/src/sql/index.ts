@@ -27,6 +27,7 @@ export class Site extends Model {
   public buildCommand!: string | null;
   public githubAccessToken!: string | null;
   public siteURL!: string | null;
+  public postBuildCommand!: string | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -84,6 +85,10 @@ Site.init(
       allowNull: true,
     },
     siteURL: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    postBuildCommand: {
       type: DataTypes.STRING,
       allowNull: true,
     },

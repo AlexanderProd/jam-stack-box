@@ -1,3 +1,4 @@
+import { exec } from 'child_process';
 import { join } from 'path';
 
 import BuildProcesses from '../BuildProcesses';
@@ -9,6 +10,16 @@ import { docker } from '..';
 
 const startBuild = async (site: Site) => {
   const { id } = site;
+  const buildEnvVars: BuildEnvVars = {
+    SITE_ID: site.id ? site.id : 'undefined',
+    REPO_URL: site.source ? site.source : 'undefined',
+    BUILD_COMMAND: site.buildCommand ? site.buildCommand : 'undefined',
+    DEPLOY_DIR: join('/sites-public/', site.name),
+    GITHUB_ACCESS_TOKEN: site.githubAccessToken
+      ? site.githubAccessToken
+      : 'undefined',
+  };
+
   let event: Event;
 
   /**
@@ -40,16 +51,6 @@ const startBuild = async (site: Site) => {
     event = await site.createEvent({ siteId: site.id, status: 'preparing' });
   }
 
-  const buildEnvVars: BuildEnvVars = {
-    SITE_ID: site.id ? site.id : 'undefined',
-    REPO_URL: site.source ? site.source : 'undefined',
-    BUILD_COMMAND: site.buildCommand ? site.buildCommand : 'undefined',
-    DEPLOY_DIR: join('/sites-public/', site.name),
-    GITHUB_ACCESS_TOKEN: site.githubAccessToken
-      ? site.githubAccessToken
-      : 'undefined',
-  };
-
   try {
     const container = await createBuilderContainer(buildEnvVars);
     const stream = await container.attach({
@@ -67,6 +68,10 @@ const startBuild = async (site: Site) => {
     stream.on('end', () => {
       BuildProcesses.del(id);
       event.update({ status: 'success', buildTime: calcuateBuildTime(event) });
+
+      if(site.buildCommand) {
+        exec(site.buildCommand);
+      }
     });
     stream.on('error', code => {
       const errorMessage = `Container returned error code ${code}`;
