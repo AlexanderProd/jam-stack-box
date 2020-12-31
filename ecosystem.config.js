@@ -9,6 +9,7 @@ module.exports = {
       autorestart: true,
       watch: false,
       max_memory_restart: "1G",
+      log_date_format: "HH:mm:ss DD-MM-YY",
     },
   ],
 };
