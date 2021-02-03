@@ -14,7 +14,7 @@ const startBuild = async (site: Site) => {
     SITE_ID: site.id ? site.id : 'undefined',
     REPO_URL: site.source ? site.source : 'undefined',
     BUILD_COMMAND: site.buildCommand ? site.buildCommand : 'undefined',
-    BUILD_DIR: site.buildDir ? site.buildDir : 'undefined',
+    BUILD_DIR: site.buildDir ? site.buildDir : 'public',
     DEPLOY_DIR: join('/sites-public/', site.name),
     GITHUB_ACCESS_TOKEN: site.githubAccessToken
       ? site.githubAccessToken
