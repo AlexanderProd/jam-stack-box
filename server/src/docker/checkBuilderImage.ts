@@ -12,6 +12,7 @@ const checkBuilderImage = (): Promise<boolean> => {
         }
         resolve(false);
       });
+      resolve(false);
     } catch (error) {
       reject(error);
     }
