@@ -64,7 +64,7 @@ deploy_files() {
     exit 1
   fi
 
-  if rsync -aru --delete ./public/ $DEPLOY_DIR; then
+  if rsync -aru --delete ./$BUILD_DIR/ $DEPLOY_DIR; then
     echo "Sucessfully deployed!"
     exit 0
   else

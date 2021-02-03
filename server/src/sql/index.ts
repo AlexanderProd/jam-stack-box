@@ -25,6 +25,7 @@ export class Site extends Model {
   public displayName!: string | null;
   public source!: string | null;
   public buildCommand!: string | null;
+  public buildDir!: string | null;
   public githubAccessToken!: string | null;
   public siteURL!: string | null;
   public postBuildCommand!: string | null;
@@ -77,6 +78,10 @@ Site.init(
       allowNull: true,
     },
     buildCommand: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    buildDir: {
       type: DataTypes.STRING,
       allowNull: true,
     },

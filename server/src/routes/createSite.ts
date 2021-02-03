@@ -1,12 +1,15 @@
 import { Request, Response } from 'express';
 
 import { Site } from '../sql';
-import { sanitizeName } from '../util';
+import { sanitizeName, sanitizeBuildDir } from '../util';
 
 const createSite = async (req: Request, res: Response) => {
   const data: Site = {
     ...req.body,
     name: sanitizeName(req.body.name),
+    buildDir: req.body.buildDir
+      ? sanitizeBuildDir(req.body.buildDir)
+      : 'public',
     displayName: req.body.name,
   };
 

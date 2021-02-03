@@ -6,6 +6,7 @@ export interface BuildEnvVars {
   SITE_ID: string;
   REPO_URL: string;
   BUILD_COMMAND: string;
+  BUILD_DIR: string; // for Gatsby public, create-react-app usually dist
   DEPLOY_DIR: string;
   GITHUB_ACCESS_TOKEN: string;
 }
