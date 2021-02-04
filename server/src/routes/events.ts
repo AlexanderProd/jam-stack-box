@@ -21,6 +21,7 @@ const events = async (req: Request, res: Response) => {
         'createdAt',
         'updatedAt',
       ],
+      order: [['createdAt', 'DESC']],
       include: [{ model: Site, attributes: ['name'] }],
     });
 
