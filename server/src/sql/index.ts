@@ -8,6 +8,7 @@ import {
   HasManyGetAssociationsMixin,
   HasManyCreateAssociationMixin,
 } from 'sequelize';
+import { HostConfig } from 'dockerode';
 import { join } from 'path';
 
 import constants from '../config';
@@ -16,7 +17,7 @@ import { createSiteID, isProd } from '../util';
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: join(constants.DB_DIR, 'main.db'),
-  logging: !isProd,
+  logging: isProd ? false : console.log,
 });
 
 export class Site extends Model {
@@ -29,6 +30,7 @@ export class Site extends Model {
   public githubAccessToken!: string | null;
   public siteURL!: string | null;
   public postBuildCommand!: string | null;
+  public hostConfig!: HostConfig | null;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -97,6 +99,10 @@ Site.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    hostConfig: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
   },
   { sequelize: sequelize, tableName: 'sites' }
 );
@@ -140,4 +146,4 @@ Site.hasMany(Event, {
 
 Event.belongsTo(Site);
 
-sequelize.sync({ alter: true });
+sequelize.sync({ alter: false });

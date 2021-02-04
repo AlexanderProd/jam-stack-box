@@ -53,7 +53,10 @@ const startBuild = async (site: Site) => {
   }
 
   try {
-    const container = await createBuilderContainer(buildEnvVars);
+    const container = await createBuilderContainer(
+      buildEnvVars,
+      site.hostConfig
+    );
     const stream = await container.attach({
       stream: true,
       stdout: true,

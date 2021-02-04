@@ -1,10 +1,13 @@
-import { Container } from 'dockerode';
+import { Container, HostConfig } from 'dockerode';
 
 import { docker } from '..';
 import constants from '../config';
 import { BuildEnvVars } from '../types';
 
-const createBuilderContainer = (env: BuildEnvVars): Promise<Container> => {
+const createBuilderContainer = (
+  env: BuildEnvVars,
+  hostConfig?: HostConfig
+): Promise<Container> => {
   const envStrings: Array<string> = [];
 
   for (const [key, value] of Object.entries(env)) {
@@ -20,6 +23,7 @@ const createBuilderContainer = (env: BuildEnvVars): Promise<Container> => {
           '/sites-public': {},
         },
         HostConfig: {
+          ...hostConfig,
           Binds: [`${constants.SITES_DIR}:/sites-public`],
           AutoRemove: true,
         },
