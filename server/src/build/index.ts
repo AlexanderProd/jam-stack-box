@@ -69,12 +69,29 @@ const startBuild = async (site: Site) => {
 
     saveBuildLog(event, stream);
 
-    stream.on('end', () => {
+    stream.on('end', async () => {
       BuildProcesses.del(id);
-      event.update({ status: 'success', buildTime: calcuateBuildTime(event) });
+      const {
+        State: { ExitCode },
+      } = await container.inspect();
+      if (ExitCode === 0) {
+        event.update({
+          status: 'success',
+          buildTime: calcuateBuildTime(event),
+        });
 
-      if (site.postBuildCommand) {
-        exec(site.postBuildCommand);
+        if (site.postBuildCommand) {
+          exec(site.postBuildCommand);
+        }
+
+        container.remove();
+      } else {
+        event.update({
+          status: 'failed',
+          buildTime: calcuateBuildTime(event),
+        });
+
+        container.remove();
       }
     });
     stream.on('error', code => {
@@ -83,6 +100,8 @@ const startBuild = async (site: Site) => {
       console.log(errorMessage);
       BuildProcesses.del(id);
       event.update({ status: 'failed', description: errorMessage });
+
+      container.remove();
     });
 
     container.start();

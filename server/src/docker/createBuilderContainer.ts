@@ -25,7 +25,7 @@ const createBuilderContainer = (
         HostConfig: {
           ...hostConfig,
           Binds: [`${constants.SITES_DIR}:/sites-public`],
-          AutoRemove: true,
+          AutoRemove: false,
         },
       });
 
