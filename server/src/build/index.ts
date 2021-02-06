@@ -86,10 +86,11 @@ const startBuild = async (site: Site) => {
 
         container.remove();
       } else {
-        event.update({
-          status: 'failed',
-          buildTime: calcuateBuildTime(event),
-        });
+        if (event.status !== 'stopped')
+          event.update({
+            status: 'failed',
+            buildTime: calcuateBuildTime(event),
+          });
 
         container.remove();
       }
