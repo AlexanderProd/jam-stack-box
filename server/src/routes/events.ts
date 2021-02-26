@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Event, Site } from '../sql';
 
 const events = async (req: Request, res: Response) => {
-  const { limit, skip } = req.query;
+  const { limit, skip, siteId } = req.query;
   let data: {
     count: number;
     rows: Event[];
@@ -20,9 +20,12 @@ const events = async (req: Request, res: Response) => {
         'description',
         'createdAt',
         'updatedAt',
+        'siteId',
       ],
       order: [['createdAt', 'DESC']],
+      //@ts-ignore
       include: [{ model: Site, attributes: ['name'] }],
+      where: siteId ? { siteId: String(siteId) } : {},
     });
 
     if (!data) {

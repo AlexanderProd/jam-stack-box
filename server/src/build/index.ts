@@ -4,7 +4,7 @@ import { join } from 'path';
 import BuildProcesses from '../BuildProcesses';
 import { createBuilderContainer } from '../docker';
 import { BuildEnvVars } from '../types';
-import { saveBuildLog, calcuateBuildTime } from '../util';
+import { saveBuildLog } from '../util';
 import { Site, Event } from '../sql';
 import { docker } from '..';
 
@@ -38,7 +38,10 @@ const startBuild = async (site: Site) => {
     BuildProcesses.set({
       [id]: { ...runningBuild, status: 'preparing' },
     });
-    event = await site.createEvent({ siteId: site.id, status: 'preparing' });
+    event = await site.$create('event', {
+      siteId: site.id,
+      status: 'preparing',
+    });
 
     try {
       const container = docker.getContainer(runningBuild.container.id);
@@ -49,13 +52,16 @@ const startBuild = async (site: Site) => {
       console.error(error);
     }
   } else {
-    event = await site.createEvent({ siteId: site.id, status: 'preparing' });
+    event = await site.$create('event', {
+      siteId: site.id,
+      status: 'preparing',
+    });
   }
 
   try {
     const container = await createBuilderContainer(
       buildEnvVars,
-      site.hostConfig
+      site.containerHostConfig
     );
     const stream = await container.attach({
       stream: true,
@@ -77,7 +83,6 @@ const startBuild = async (site: Site) => {
       if (ExitCode === 0) {
         event.update({
           status: 'success',
-          buildTime: calcuateBuildTime(event),
         });
 
         if (site.postBuildCommand) {
@@ -89,7 +94,6 @@ const startBuild = async (site: Site) => {
         if (event.status !== 'stopped')
           event.update({
             status: 'failed',
-            buildTime: calcuateBuildTime(event),
           });
 
         container.remove();

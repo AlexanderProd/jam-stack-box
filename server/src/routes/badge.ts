@@ -24,7 +24,7 @@ const badge = async (req: Request, res: Response) => {
 
   try {
     const site = await Site.findOne({ where: condition });
-    const lastEvent = await site.getEvents({
+    const lastEvent = await site.$get('events', {
       limit: 1,
       attributes: ['status'],
       order: [['updatedAt', 'DESC']],
