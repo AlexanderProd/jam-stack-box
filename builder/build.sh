@@ -2,6 +2,7 @@
 
 TEMP_FOLDER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
 
+. $HOME/.nvm/nvm.sh
 . ./build-functions.sh --source-only
 
 main() {
@@ -20,6 +21,10 @@ main() {
   else
     echo "Cloning $REPO_URL failed!"
     exit 1
+  fi
+
+  if [ "$NODE_VERSION" != "undefined" ]; then
+    switch_node_version
   fi
 
   if [ -f "yarn.lock" ]; then

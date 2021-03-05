@@ -106,7 +106,7 @@ Returns an svg image with the current state of a site, for example building or s
 
 ## 📌 ToDo
 
-- [ ] Use dynamic NodeJS version in Builder using NVM.
+- [x] Use dynamic NodeJS version in Builder using NVM.
 - [ ] Remote Deployment
 - [ ] Add frontend to control sites and builds.
 - [ ] Add support for other static site generators than Gatsby.

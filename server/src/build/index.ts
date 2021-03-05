@@ -14,6 +14,7 @@ const startBuild = async (site: Site) => {
     SITE_ID: site.id ? site.id : 'undefined',
     REPO_URL: site.source ? site.source : 'undefined',
     BUILD_COMMAND: site.buildCommand ? site.buildCommand : 'undefined',
+    NODE_VERSION: site.nodeVersion ? site.nodeVersion : 'undefined',
     BUILD_DIR: site.buildDir ? site.buildDir : 'public',
     DEPLOY_DIR: join('/sites-public/', site.name),
     GITHUB_ACCESS_TOKEN: site.githubAccessToken
@@ -80,6 +81,7 @@ const startBuild = async (site: Site) => {
       const {
         State: { ExitCode },
       } = await container.inspect();
+
       if (ExitCode === 0) {
         event.update({
           status: 'success',
@@ -89,7 +91,7 @@ const startBuild = async (site: Site) => {
           exec(site.postBuildCommand);
         }
 
-        container.remove();
+        //container.remove();
       } else {
         if (event.status !== 'stopped')
           event.update({

@@ -97,9 +97,12 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   xvfb \
   zip
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
-  apt-get install -y nodejs && \
-  npm install -g yarn node-gyp
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && \
+  export NVM_DIR="$HOME/.nvm" && \
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
+  nvm install --lts && \
+  npm install -g node-gyp
 
 WORKDIR /home
 

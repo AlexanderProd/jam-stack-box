@@ -11,6 +11,7 @@ interface SiteAttributes {
   displayName: string | null;
   source: string;
   buildCommand: string | null;
+  nodeVersion: string | null;
   buildDir: string | null;
   githubAccessToken: string | null;
   siteURL: string | null;
@@ -53,6 +54,9 @@ class Site extends Model<SiteAttributes, SiteCreationAttributes> {
 
   @Column({ allowNull: true })
   buildCommand!: string;
+
+  @Column({ allowNull: true })
+  nodeVersion!: string;
 
   @Column({ allowNull: true })
   buildDir: string;

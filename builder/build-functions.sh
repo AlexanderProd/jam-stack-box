@@ -19,6 +19,11 @@ run_custom_command() {
 }
 
 run_yarn() {
+  if ! npm install -g yarn; then 
+    echo "Failed installing yarn!"
+    exit 1
+  fi
+
   if yarn install; then
     echo "Sucessfully installed packages with yarn."
   else
@@ -55,6 +60,14 @@ run_npm() {
       echo "Build with npm failed."
       exit 1
     fi
+  fi
+}
+
+switch_node_version() {
+  if nvm install $NODE_VERSION; then
+  else 
+    echo "Switching to node version $NODE_VERSION failed!"
+    echo "Using node version $(node -v)."
   fi
 }
 
