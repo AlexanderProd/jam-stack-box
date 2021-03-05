@@ -91,7 +91,7 @@ const startBuild = async (site: Site) => {
           exec(site.postBuildCommand);
         }
 
-        //container.remove();
+        container.remove();
       } else {
         if (event.status !== 'stopped')
           event.update({
