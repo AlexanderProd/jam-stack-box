@@ -64,8 +64,7 @@ run_npm() {
 }
 
 switch_node_version() {
-  if nvm install $NODE_VERSION; then
-  else 
+  if ! nvm install $NODE_VERSION; then
     echo "Switching to node version $NODE_VERSION failed!"
     echo "Using node version $(node -v)."
   fi
