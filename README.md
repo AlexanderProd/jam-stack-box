@@ -82,6 +82,9 @@ Expects content type `x-www-form-urlencoded`.
 | name   | true     | Name of the site, only used for front-end purposes.                                                                       |
 | source | true     | GitHub link to a repository with the site content. <br/> ( e.g. https://github.com/AlexanderProd/gatsby-shopify-starter ) |
 
+If you want to use a private repo as source you have to supply a GitHub OAuth token in the source URL, like this. `https://<token>@github.com/owner/repo.git`. JamStackBox is using [this technique](https://docs.github.com/en/github/extending-github/git-automation-with-oauth-tokens) to clone private repos.
+You can read how to create a personal OAuth token [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+
 ### POST `/build/[id or name]`
 
 Triggers a new build for the site with the ID.
