@@ -15,7 +15,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   locale-gen en_US.UTF-8 && \
   update-locale en_US.UTF-8 && \
   add-apt-repository -y ppa:git-core/ppa && \
-  add-apt-repository -y ppa:rwky/graphicsmagick && \
+  #add-apt-repository -y ppa:rwky/graphicsmagick && \
   add-apt-repository -y ppa:deadsnakes/ppa && \
   apt-get -y update && \
   apt-get install -y --no-install-recommends \
