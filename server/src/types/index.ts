@@ -10,6 +10,7 @@ export interface BuildEnvVars {
   BUILD_DIR: string; // for Gatsby public, create-react-app usually dist
   DEPLOY_DIR: string;
   GITHUB_ACCESS_TOKEN: string;
+  [key: string]: string;
 }
 
 export interface BuildProcess {

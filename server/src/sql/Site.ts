@@ -17,6 +17,7 @@ interface SiteAttributes {
   siteURL: string | null;
   postBuildCommand: string | null;
   hostConfig: HostConfig | null;
+  envVariables: { [key: string]: string };
 }
 
 interface SiteCreationAttributes
@@ -72,6 +73,9 @@ class Site extends Model<SiteAttributes, SiteCreationAttributes> {
 
   @Column({ type: DataType.JSON, allowNull: true })
   containerHostConfig: HostConfig;
+
+  @Column({ type: DataType.JSON, allowNull: true })
+  envVariables: { [key: string]: string };
 
   @HasMany(() => Event)
   events: Event[];

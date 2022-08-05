@@ -9,7 +9,8 @@ import { Site, Event } from '../sql';
 import { docker } from '..';
 
 const startBuild = async (site: Site) => {
-  const { id } = site;
+  const { id, envVariables } = site;
+
   const buildEnvVars: BuildEnvVars = {
     SITE_ID: site.id ? site.id : 'undefined',
     REPO_URL: site.source ? site.source : 'undefined',
@@ -20,6 +21,7 @@ const startBuild = async (site: Site) => {
     GITHUB_ACCESS_TOKEN: site.githubAccessToken
       ? site.githubAccessToken
       : 'undefined',
+    ...envVariables,
   };
 
   let event: Event;
