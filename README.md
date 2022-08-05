@@ -36,7 +36,11 @@ Feel free to contact me on Twitter [@alexanderhorl](https://twitter.com/alexande
     $ bash install.sh
     ```
 
-3.  **Start the server process**
+3.  **Create .env file from example**
+
+    Use the `.env example` file to a create a file called `.env` in the server directory. This file contains all the necessary enviroment variables like the admin password.
+
+4.  **Start the server process**
 
     The server process is a NodeJS server listening to a specific port, default `3000`.
     You can change the port by providing a `PORT` enviroment variable.
