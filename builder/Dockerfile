@@ -108,6 +108,6 @@ WORKDIR /home
 
 COPY . .
 
-VOLUME [ "/sites-public" ]
+VOLUME [ "/sites-public", "/build-cache" ]
 
 ENTRYPOINT [ "./build.sh" ]

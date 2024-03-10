@@ -151,3 +151,4 @@ builder/tmp/**/*
 db
 .devcontainer/
 sites-public/
+build-cache/

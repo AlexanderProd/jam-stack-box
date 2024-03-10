@@ -21,10 +21,14 @@ const createBuilderContainer = (
         Env: envStrings,
         Volumes: {
           '/sites-public': {},
+          '/build-cache': {},
         },
         HostConfig: {
           ...hostConfig,
-          Binds: [`${constants.SITES_DIR}:/sites-public`],
+          Binds: [
+            `${constants.SITES_DIR}:/sites-public`,
+            `${constants.BUILD_CACHE_DIR}:/build-cache`,
+          ],
           AutoRemove: false,
         },
       });

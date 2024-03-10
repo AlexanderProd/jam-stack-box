@@ -20,7 +20,9 @@ import { stopRunningBuilds } from './util';
 const { PORT, FRONTEND_DIR, DB_DIR, SITES_DIR } = constants;
 
 const app = express();
-export const docker = new Docker({ socketPath: '/var/run/docker.sock' });
+export const docker = new Docker({
+  socketPath: process.env.DOCKER_HOST ?? '/var/run/docker.sock',
+});
 
 const main = async () => {
   try {
@@ -36,6 +38,10 @@ const main = async () => {
 
     if (!existsSync(SITES_DIR)) {
       mkdirSync(SITES_DIR);
+    }
+
+    if (!existsSync(constants.BUILD_CACHE_DIR)) {
+      mkdirSync(constants.BUILD_CACHE_DIR);
     }
   } catch (error) {
     console.error(error);

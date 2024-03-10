@@ -6,6 +6,7 @@ const constants = {
   FRONTEND_DIR: join(__dirname, '/../../frontend/dist/'),
   BUILDER_PATH: join(__dirname, '/../../builder/'),
   SITES_DIR: join(__dirname, '/../../sites-public/'),
+  BUILD_CACHE_DIR: join(__dirname, '/../../build-cache/'),
   BUILDER_IMAGE_TAG: 'jamstackbox_builder',
 };
 

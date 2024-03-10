@@ -1,19 +1,15 @@
 #!/bin/bash
 
-TEMP_FOLDER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
-
 . $HOME/.nvm/nvm.sh
 . ./build-functions.sh --source-only
 
 main() {
-  trap cleanup EXIT SIGHUP SIGINT SIGTERM
-
   if [ "$REPO_URL" == "undefined" ]; then
     exit 0
   fi
 
-  mkdir $TEMP_FOLDER
-  cd $TEMP_FOLDER
+  mkdir $SITE_ID
+  cd $SITE_ID
 
   echo git clone $REPO_URL
   if git clone $REPO_URL .; then
@@ -21,6 +17,12 @@ main() {
   else
     echo "Cloning $REPO_URL failed!"
     exit 1
+  fi
+
+  if [ "$USE_CACHE" == "true" ]; then
+    echo "Using cache for $SITE_ID."
+    link_node_modules
+    restore_build_cache
   fi
 
   if [ "$NODE_VERSION" != "undefined" ]; then
@@ -33,6 +35,7 @@ main() {
     run_npm
   fi
 
+  copy_build_cache
   deploy_files
 }
 

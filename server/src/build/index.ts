@@ -21,6 +21,7 @@ const startBuild = async (site: Site) => {
     GITHUB_ACCESS_TOKEN: site.githubAccessToken
       ? site.githubAccessToken
       : 'undefined',
+    USE_CACHE: true,
     ...envVariables,
   };
 

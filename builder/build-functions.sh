@@ -1,19 +1,22 @@
 #!/bin/bash
 
-cleanup() {
-  if [[ "$(pwd)" == *"$TEMP_FOLDER"* ]]; then
-    cd ..
-    rm -rf $TEMP_FOLDER
-  else
-    exit
-  fi
-}
-
 run_custom_command() {
   if $BUILD_COMMAND; then
     echo "Successfully build with custom command \"$BUILD_COMMAND\"."
   else 
     echo "Custom build command \"$BUILD_COMMAND\" failed."
+    exit 1
+  fi
+}
+
+link_node_modules() {
+  if ! mkdir -p /build-cache/$SITE_ID/node_modules; then
+    echo "Creating node_modules cache failed!"
+    exit 1
+  fi
+
+  if ! ln -s /build-cache/$SITE_ID/node_modules $(pwd)/node_modules; then
+    echo "Linking node_modules cache failed!"
     exit 1
   fi
 }
@@ -67,6 +70,34 @@ switch_node_version() {
   if ! nvm install $NODE_VERSION; then
     echo "Switching to node version $NODE_VERSION failed!"
     echo "Using node version $(node -v)."
+  fi
+}
+
+copy_build_cache() {
+  if rsync -aru --delete $(pwd)/.cache /build-cache/$SITE_ID; then
+    echo "Sucessfully copied .cache to /build-cache/$SITE_ID."
+  else
+    echo "Copying .cache to /build-cache/$SITE_ID failed!"
+  fi
+
+  if rsync -aru --delete $(pwd)/$BUILD_DIR /build-cache/$SITE_ID; then
+    echo "Sucessfully copied $BUILD_DIR to /build-cache/$SITE_ID."
+  else
+    echo "Copying $BUILD_DIR to /build-cache/$SITE_ID failed!"
+  fi
+}
+
+restore_build_cache() {
+  if rsync -aru --delete /build-cache/$SITE_ID/.cache $(pwd); then
+    echo "Sucessfully restored .cache from /build-cache/$SITE_ID."
+  else
+    echo "Restoring .cache from /build-cache/$SITE_ID failed!"
+  fi
+
+  if rsync -aru --delete /build-cache/$SITE_ID/$BUILD_DIR $(pwd); then
+    echo "Sucessfully restored $BUILD_DIR from /build-cache/$SITE_ID."
+  else
+    echo "Restoring $BUILD_DIR from /build-cache/$SITE_ID failed!"
   fi
 }
 
