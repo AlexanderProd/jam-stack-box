@@ -1,4 +1,4 @@
-import { Container, HostConfig } from 'dockerode';
+import { Container, HostConfig, ContainerCreateOptions } from 'dockerode';
 
 import { docker } from '..';
 import constants from '../config';
@@ -6,7 +6,8 @@ import { BuildEnvVars } from '../types';
 
 const createBuilderContainer = (
   env: BuildEnvVars,
-  hostConfig?: HostConfig
+  hostConfig?: HostConfig,
+  containerCreationOptions?: ContainerCreateOptions
 ): Promise<Container> => {
   const envStrings: Array<string> = [];
 
@@ -31,6 +32,7 @@ const createBuilderContainer = (
           ],
           AutoRemove: false,
         },
+        ...containerCreationOptions,
       });
 
       resolve(container);

@@ -1,5 +1,5 @@
 import { Table, Model, Column, HasMany, DataType } from 'sequelize-typescript';
-import { HostConfig } from 'dockerode';
+import { HostConfig, ContainerCreateOptions } from 'dockerode';
 import { Optional } from 'sequelize';
 
 import { createSiteID } from '../util';
@@ -73,6 +73,9 @@ class Site extends Model<SiteAttributes, SiteCreationAttributes> {
 
   @Column({ type: DataType.JSON, allowNull: true })
   containerHostConfig: HostConfig;
+
+  @Column({ type: DataType.JSON, allowNull: true })
+  containerCreationOptions: ContainerCreateOptions;
 
   @Column({ type: DataType.JSON, allowNull: true })
   envVariables: { [key: string]: string };
