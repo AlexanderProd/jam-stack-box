@@ -2,9 +2,9 @@ FROM ubuntu:20.04
 
 LABEL maintainer="@alexanderhorl"
 
-ENV LANGUAGE en_US:en
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
   apt-get -y update && \
