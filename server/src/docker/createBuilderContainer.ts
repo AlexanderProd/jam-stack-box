@@ -37,6 +37,7 @@ const createBuilderContainer = (
 
       resolve(container);
     } catch (error) {
+      console.error(error);
       reject(error);
     }
   });
