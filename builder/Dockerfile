@@ -97,6 +97,16 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
   xvfb \
   zip
 
+ARG user=jamstackbox
+ARG group=jamstackbox
+ARG uid=1000
+ARG gid=1000
+
+RUN groupadd -g ${gid} ${group}
+RUN useradd -u ${uid} -g ${group} -s /bin/bash -m ${user}
+
+USER ${uid}:${gid}
+
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
   export NVM_DIR="$HOME/.nvm" && \
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
@@ -104,10 +114,10 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | b
   nvm install --lts && \
   npm install -g node-gyp
 
-WORKDIR /home
+WORKDIR /home/${user}
 
 COPY . .
 
 VOLUME [ "/sites-public", "/build-cache" ]
 
-ENTRYPOINT [ "./build.sh" ]
+CMD [ "./build.sh" ]

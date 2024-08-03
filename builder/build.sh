@@ -5,6 +5,7 @@
 
 main() {
   if [ "$REPO_URL" == "undefined" ]; then
+    echo "No repository URL provided."
     exit 0
   fi
 

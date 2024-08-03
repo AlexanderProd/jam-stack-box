@@ -5,9 +5,7 @@ import { docker } from '..';
 export const isProd = process.env.NODE_ENV === 'production';
 
 export const createSiteID = (): string => {
-  return Math.random()
-    .toString(36)
-    .substring(2, 8);
+  return Math.random().toString(36).substring(2, 8);
 };
 
 export const saveBuildLog = (
@@ -26,11 +24,7 @@ export const saveBuildLog = (
 };
 
 export const sanitizeName = (name: string) =>
-  name
-    .trim()
-    .replace(/\s/g, '-')
-    .toLowerCase()
-    .substr(0, 40);
+  name.trim().replace(/\s/g, '-').toLowerCase().substr(0, 40);
 
 /**
  * Recursively removes dots, slashes and whitespaces from the start and end of the string.

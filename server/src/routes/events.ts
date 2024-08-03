@@ -9,10 +9,13 @@ const events = async (req: Request, res: Response) => {
     rows: Event[];
   };
 
+  let limitNumber = limit ? Number(limit) : undefined;
+  let skipNumber = skip ? Number(skip) : undefined;
+
   try {
     data = await Event.findAndCountAll({
-      limit: limit,
-      offset: skip,
+      limit: limitNumber,
+      offset: skipNumber,
       attributes: [
         'id',
         'name',
