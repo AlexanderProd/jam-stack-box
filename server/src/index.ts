@@ -1,4 +1,4 @@
-import './env';
+import 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
 import Docker from 'dockerode';
