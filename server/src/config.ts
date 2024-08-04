@@ -9,11 +9,11 @@ const constants = {
   BUILDER_IMAGE_TAG: 'jamstackbox_builder',
   DB_DIALECT: process.env.DB_DIALECT ? process.env.DB_DIALECT : 'sqlite',
   DB_DIR: join(__dirname, '/../../db/'),
-  DB_HOST: process.env.DB_HOST ? process.env.DB_HOST : 'localhost',
+  DB_HOST: process.env.DB_HOST ? process.env.DB_HOST : undefined,
   DB_NAME: process.env.DB_NAME ? process.env.DB_NAME : 'main.db',
   DB_PORT: process.env.DB_PORT ? process.env.DB_PORT : 3306,
-  DB_USER: process.env.DB_USER ? process.env.DB_USER : null,
-  DB_PASSWORD: process.env.DB_PASSWORD ? process.env.DB_PASSWORD : null,
+  DB_USER: process.env.DB_USER ? process.env.DB_USER : undefined,
+  DB_PASSWORD: process.env.DB_PASSWORD ? process.env.DB_PASSWORD : undefined,
   MIGRATE_DB: process.env.MIGRATE_DB ? process.env.MIGRATE_DB : 'false',
 };
 

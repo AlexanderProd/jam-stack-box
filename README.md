@@ -74,7 +74,7 @@ A new site gets created by posting a POST request against `/site` and a build ge
 ## REST Endpoints
 
 The most important API endpoints are the following, checkout index.js in the server directory for the rest.
-The default development port is 3000, the production port is 6469. It can be with a either PORT enviroment variable or in the config file in the server directory.
+The default development port is 3000. It can be changed with a either PORT enviroment variable or in the config file in the server directory.
 
 ### POST `/site`
 
