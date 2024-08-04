@@ -7,7 +7,7 @@ import Event from './Event';
 import Site from './Site';
 
 const sequelize = new Sequelize({
-  dialect: 'mariadb',
+  dialect: constants.DB_DIALECT as Dialect,
   host: constants.DB_HOST,
   username: constants.DB_USER,
   password: constants.DB_PASSWORD,
