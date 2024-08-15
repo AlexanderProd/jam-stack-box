@@ -1,5 +1,11 @@
 #!/bin/bash
 
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US:en
+export LC_ALL=en_US.UTF-8
+export FORCE_COLOR=0
+export NO_COLOR=1
+
 . $HOME/.nvm/nvm.sh
 . ./build-functions.sh --source-only
 

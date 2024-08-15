@@ -72,7 +72,7 @@ const startBuild = async (site: Site) => {
       stream: true,
       stdout: true,
       stderr: true,
-      tty: true,
+      tty: false,
     });
 
     BuildProcesses.set({ [id]: { status: 'building', container, event } });

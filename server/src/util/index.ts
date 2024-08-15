@@ -12,14 +12,15 @@ export const saveBuildLog = (
   event: Event,
   stream: NodeJS.ReadWriteStream
 ): void => {
-  const chunks: any[] = [];
+  let log: string = '';
 
-  stream.on('data', chunk => chunks.push(chunk));
+  stream.on('data', chunk => {
+    log += removeAnsiEscapeCodes(chunk.toString('utf8'));
+    console.log(removeAnsiEscapeCodes(chunk.toString('utf8')));
+  });
   stream.on('error', error => console.error(error));
   stream.on('end', () => {
-    const data = Buffer.concat(chunks).toString('utf8');
-
-    event.update({ log: data });
+    event.update({ log });
   });
 };
 
@@ -80,4 +81,10 @@ export const calcuateBuildTime = (event: Event): number => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const removeAnsiEscapeCodes = (text: string): string => {
+  const ansiEscape =
+    /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+  return text.replace(ansiEscape, '');
 };
